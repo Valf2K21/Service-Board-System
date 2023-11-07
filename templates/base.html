@@ -1,106 +1,121 @@
+<!--
+    The Service Board System is a web application for monitoring vehicle maintenance status according to three states: counter, in progress, and completed.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
 <!-- declare document type and version of this html template -->
 <!DOCTYPE html>
 
 <!-- start of html code -->
 <html>
-  <!-- start of head part of the code -->
-  <head>
-    <!-- flask version of importing css dependency for styling -->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',
-    filename='style.css') }}" />
+	<!-- start of head part of the code -->
+	<head>
+		<!-- flask version of importing css dependency for styling -->
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static',
+		filename='style.css') }}" />
 
-    <!-- set webpage's title to display in tab -->
-    <title>Service Board System</title>
+		<!-- set webpage's title to display in tab -->
+		<title>Service Board System</title>
+	</head>
 
-    <!-- import jquery library from a content delivery network (cdn - external dependency) -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-  </head>
+	<!-- start of body part of code -->
+	<body class="body">
+		<!-- upper header part of code, containing brand, title, and automated time -->
+		<header class="upper_header">
+		<!-- container to hold brand, title, and automated time -->
+		<div>
+			<!-- text display for brand -->
+			<div class="brand">ISUZU</div>
 
-  <!-- start of body part of code -->
-  <body class="body">
-    <!-- upper header part of code, containing brand, title, and automated time -->
-    <header class="upper_header">
-      <!-- container to hold brand, title, and automated time -->
-      <div>
-        <!-- text display for brand -->
-        <div class="brand">ISUZU</div>
+			<!-- text display for title -->
+			<div class="upper_title">SERVICE BOARD</div>
 
-        <!-- text display for title -->
-        <div class="upper_title">SERVICE BOARD</div>
+			<!-- container positioned at right specifically for automated time -->
+			<div style="float: right; text-align: right">
+			<!-- text display for automated time (text in <p> tags is just a placeholder, and result will replace it) -->
+			<span class="time" id="result">Time Placeholder</span>
+			</div>
+			<div style="clear: both"></div>
+		</div>
+		</header>
 
-        <!-- container positioned at right specifically for automated time -->
-        <div style="float: right; text-align: right">
-          <!-- text display for automated time (text in <p> tags is just a placeholder, and result will replace it) -->
-          <span class="time" id="result">Time Placeholder</span>
-        </div>
-        <div style="clear: both"></div>
-      </div>
-    </header>
+		<!-- lower header part of code, containing legend, booking, walk-in, and update -->
+		<header class="lower_header">
+		<!-- container to hold legend, booking, walk-in, and update -->
+		<div>
+			<!-- text display for legend -->
+			<div class="lower_title">LEGEND:</div>
 
-    <!-- lower header part of code, containing legend, booking, walk-in, and update -->
-    <header class="lower_header">
-      <!-- container to hold legend, booking, walk-in, and update -->
-      <div>
-        <!-- text display for legend -->
-        <div class="lower_title">LEGEND:</div>
+			<!-- container positioned at right specifically for booking and walk-in -->
+			<div style="float: left; text-align: left">
+			<!-- text display for booking -->
+			<div class="booking">BOOKING</div>
 
-        <!-- container positioned at right specifically for booking and walk-in -->
-        <div style="float: left; text-align: left">
-          <!-- text display for booking -->
-          <div class="booking">BOOKING</div>
+			<!-- text display for walk-in -->
+			<div class="walk-in">WALK-IN</div>
+			</div>
 
-          <!-- text display for walk-in -->
-          <div class="walk-in">WALK-IN</div>
-        </div>
+			<form method="POST">
+			<!-- button for update -->
+			<button class="update_button" onclick="update_plates(event)">UPDATE</button>
+			</form>
+			<div style="clear: both"></div>
+		</div>
+		</header>
 
-        <form method="POST">
-          <!-- button for update -->
-          <button class="update_button" onclick="update_plates(event)">UPDATE</button>
-        </form>
-        <div style="clear: both"></div>
-      </div>
-    </header>
+		<!-- container positioned below the lower header, containing counter, in progress, and completed columns -->
+		<div class="content">
+		<!-- container positioned at left specifically for counter column -->
+		<div class="column">
+			<!-- text display for counter column header -->
+			<h1>COUNTER</h1>
 
-    <!-- container positioned below the lower header, containing counter, in progress, and completed columns -->
-    <div class="content">
-      <!-- container positioned at left specifically for counter column -->
-      <div class="column">
-        <!-- text display for counter column header -->
-        <h1>COUNTER</h1>
+			<!-- text display for counter plates (text in <p> tags is just a placeholder, and counter will replace it) -->
+			<div id="counter">
+			<p class="booking_plate">Counter Plate Placeholder</p>
+			</div>
+		</div>
 
-        <!-- text display for counter plates (text in <p> tags is just a placeholder, and counter will replace it) -->
-        <div id="counter">
-          <p class="booking_plate">Counter Plate Placeholder</p>
-        </div>
-      </div>
+		<!-- container positioned at left specifically for im progress column -->
+		<div class="column">
+			<!-- text display for in progress column header -->
+			<h1>IN PROGRESS</h1>
 
-      <!-- container positioned at left specifically for im progress column -->
-      <div class="column">
-        <!-- text display for in progress column header -->
-        <h1>IN PROGRESS</h1>
+			<!-- text display for in progress plates (text in <p> tags is just a placeholder, and progress will replace it) -->
+			<div id="progress">
+			<p class="walk-in_plate">In Progress Plate Placeholder</p>
+			</div>
+		</div>
 
-        <!-- text display for in progress plates (text in <p> tags is just a placeholder, and progress will replace it) -->
-        <div id="progress">
-          <p class="walk-in_plate">In Progress Plate Placeholder</p>
-        </div>
-      </div>
+		<!-- container positioned at left specifically for completed column -->
+		<div class="column">
+			<!-- text display for completed column header -->
+			<h1>COMPLETED</h1>
 
-      <!-- container positioned at left specifically for completed column -->
-      <div class="column">
-        <!-- text display for completed column header -->
-        <h1>COMPLETED</h1>
+			<!-- text display for completed plates (text in <p> tags is just a placeholder, and completed will replace it) -->
+			<div id="completed">
+			<p class="booking_plate">Completed Plate Placeholder</p>
+			</div>
+			<div style="clear: both"></div>
+		</div>
+		<div style="clear: both"></div>
+		</div>
 
-        <!-- text display for completed plates (text in <p> tags is just a placeholder, and completed will replace it) -->
-        <div id="completed">
-          <p class="booking_plate">Completed Plate Placeholder</p>
-        </div>
-        <div style="clear: both"></div>
-      </div>
-      <div style="clear: both"></div>
-    </div>
-
-    <!-- import user-created javascript dependencies -->
-    <script src="{{ url_for('static', filename='update_time.js')}}"></script>
-    <script src="{{ url_for('static', filename='update_plates.js')}}"></script>
-  </body>
+		<!-- import user-created javascript dependencies -->
+		<script src="{{ url_for('static', filename='update_time.js')}}"></script>
+		<script src="{{ url_for('static', filename='update_plates.js')}}"></script>
+	</body>
 </html>

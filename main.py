@@ -1,3 +1,21 @@
+'''
+    The Service Board System is a web application for monitoring vehicle maintenance status according to three states: counter, in progress, and completed.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # import dependencies
 import logging
 from flask import Flask, render_template, jsonify
@@ -7,8 +25,8 @@ from functions.get_time import get_time
 from functions.plate_updater import plate_updater
 
 # configure logging to only show error level messages
-#log = logging.getLogger('werkzeug')
-#log.setLevel(logging.ERROR)
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 # create a Flask web application instance
 app = Flask(__name__)
@@ -29,7 +47,6 @@ def time_grab():
 
 # create user-defined function for current all_plates grabber
 def plates_grab():
-    print('plates_grab called successfully')
     # call plate_updater function to get current all_plates
     all_plates = plate_updater()
 

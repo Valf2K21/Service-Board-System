@@ -1,3 +1,21 @@
+'''
+    The Service Board System is a web application for monitoring vehicle maintenance status according to three states: counter, in progress, and completed.
+    Copyright (C) 2023 Valfrid Galinato
+    
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+    
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+    
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 # import dependencies
 import psycopg2
 import pandas as pd
@@ -18,13 +36,13 @@ def query_data():
     c = conn.cursor()
 
     # use created cursor to query and fetch data for each service state
-    c.execute('SELECT jobreq_no, plate_no, sticker_no, appoint FROM tb_jobreq WHERE jobreq_no NOT IN (SELECT jobreq_no FROM tb_jobest) AND jobcont = 1 AND jobreq_stat = 0 AND jobreq_date >= DATEADD(day, -7, GETDATE()) ORDER BY jobreq_date DESC;')
+    c.execute('SELECT jobreq_no, plate_no, sticker_no, appoint FROM tb_jobreq WHERE jobreq_no NOT IN (SELECT jobreq_no FROM tb_jobest) AND jobcont = 1 AND jobreq_stat = 0 ORDER BY jobreq_date DESC;')
     counter_data = c.fetchall()
 
-    c.execute('SELECT jr.jobreq_no, jr.plate_no, jr.sticker_no, jr.appoint FROM tb_jobreq jr INNER JOIN (SELECT plate_no, MAX(transact_date) AS latest_date FROM tb_jobest GROUP BY plate_no) je ON jr.plate_no = je.plate_no WHERE jr.jobreq_no IN (SELECT jobreq_no FROM tb_jobest) AND jr.jobcont = 1 AND jr.jobreq_stat = 0 AND jr.jobreq_date >= DATEADD(day, -7, GETDATE()) ORDER BY je.latest_date DESC;')
+    c.execute('SELECT jr.jobreq_no, jr.plate_no, jr.sticker_no, jr.appoint FROM tb_jobreq jr INNER JOIN (SELECT sticker_no, MAX(transact_date) AS latest_date FROM tb_jobest GROUP BY sticker_no) je ON jr.sticker_no = je.sticker_no WHERE jr.jobreq_no IN (SELECT jobreq_no FROM tb_jobest) AND jr.jobcont = 1 AND jr.jobreq_stat = 0 ORDER BY je.latest_date DESC;')
     progress_data = c.fetchall()
 
-    c.execute('SELECT jr.jobreq_no, jr.plate_no, jr.sticker_no, jr.appoint FROM tb_jobreq jr INNER JOIN (SELECT user_id, MAX(time) AS latest_date FROM tb_jobreq_technician GROUP BY userid) jrtech ON jr.user_id = jrtech.user_id WHERE jr.jobreq_no IN (SELECT jobreq_no FROM tb_jobest) AND jr.jobreq_no IN (SELECT jobreq_no FROM tb_repair WHERE jobreq_no = repair_no) AND jr.jobcont = 1 AND jr.jobreq_stat = 1 AND jr.jobreq_date >= DATEADD(day, -7, GETDATE()) ORDER BY jrtech.latest_date DESC;')
+    c.execute('SELECT jr.jobreq_no, jr.plate_no, jr.sticker_no, jr.appoint FROM tb_jobreq jr INNER JOIN (SELECT user_id, MAX(time) AS latest_date FROM tb_jobreq_technician GROUP BY user_id) jrtech ON jr.user_id = jrtech.user_id WHERE jr.jobreq_no IN (SELECT jobreq_no FROM tb_jobest) AND jr.jobreq_no IN (SELECT jobreq_no FROM tb_repair WHERE jobreq_no = repair_no) AND jr.jobcont = 1 AND jr.jobreq_stat = 1 ORDER BY jrtech.latest_date DESC;')
     completed_data = c.fetchall()
 
     # use pd.dataframe() function to store fetched data of each service state in their respective dataframes
