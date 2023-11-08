@@ -6,6 +6,7 @@ This project is licensed under the [GNU Affero General Public License (AGPLv3)](
 
 ## Tech Stack
 - Python - backend programming language
+- Pandas - Python-based data wrangling and analysis library
 - Flask - micro web framework to develop this Python-based web application
 - PostgreSQL - database creation and data storage of sample vehicle maintenance data
 - Psycopg2 - adapter to connect and interact Python and PostgreSQL
@@ -17,7 +18,7 @@ This project is licensed under the [GNU Affero General Public License (AGPLv3)](
 1. Clone this repository:
 ```cmd
 git clone https://github.com/Valf2K21/Service-Board-System.git
-cd Service-Board-Systen
+cd Service-Board-System
 ```
 2. Create virtual environment
 ```cmd
@@ -42,6 +43,7 @@ python -m main
 ## Acknowledgements
 The Service Board System's development was made possible thanks to the following open-source technologies and libraries:
 - Python. Huge thanks to the Python Software Foundation for continuously developing the versatile programming language that served as this system's backend language.
+- Pandas. I would like to thank Wes McKinney for creating an invaluable tool used for this system's data wrangling and analysis processes.
 - Flask. Thanks to the Pallets Projects for providing maintenance and improvements to the Python-based micro-web framework that enabled the efficient development of this system.
 - PostgreSQL. My sincere thanks to the PostgreSQL Global Development Group for developing the free and open-source relational database management system used as this system's data storage and management system.
 - Psycopg2. The Psycopg Team's efforts to provide the community with a reliable PostgreSQL connection adapter are highly appreciated, and their library enabled the system's backend to seamlessly interact with the relational database.
